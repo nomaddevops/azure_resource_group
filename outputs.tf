@@ -1,26 +1,14 @@
-
-###############################################################
-#                          AZURE_RG                           #
-# Purpose: Deploy an Azure resource gorup and his components  #
-#                   Last Updated: 01/11/22                    #
-###############################################################
-
-output "rg" {
-  value       = azurerm_resource_group.rg
-  description = "[DEPRECATED] Created resource group"
-}
-
 output "resource_group" {
   value       = azurerm_resource_group.rg
-  description = "Outputed attributes from the resource group creation (id,location,name)"
+  description = "All informations regarding deployed Resource Group "
 }
-/*
-output "vnet" {
+
+output "virtual_network" {
   value       = azurerm_virtual_network.vnet
-  description = "Created vnet"
+  description = "All informations regarding deployed Virtual Network"
 }
 
 output "subnets" {
-  value       = azurerm_subnet.subnet
-  description = "Created subnets"
-}*/
+  value       = module.subnets.subnet
+  description = "All informations regarding deployed Subnets"
+}

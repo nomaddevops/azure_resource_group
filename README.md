@@ -32,8 +32,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_location"></a> [location](#input\_location) | Common name for the region to deploy, allowed location are France Central or France South | `string` | `"francecentral"` | no |
-| <a name="input_name"></a> [name](#input\_name) | Generic name of the resource group | `string` | `null` | no |
+| <a name="input_location"></a> [location](#input\_location) | Azure Region Name (See https://azuretracks.com/2021/04/current-azure-region-names-reference/ for more infos) | `string` | `"francecentral"` | no |
 | <a name="input_rg_policy_description"></a> [rg\_policy\_description](#input\_rg\_policy\_description) | Description of the resource group policy | `string` | `""` | no |
 | <a name="input_rg_policy_mode"></a> [rg\_policy\_mode](#input\_rg\_policy\_mode) | Apply policy on resource type, All by default | `string` | `"All"` | no |
 | <a name="input_rg_policy_parameters"></a> [rg\_policy\_parameters](#input\_rg\_policy\_parameters) | Custom policy parameters to override the default one | `string` | `null` | no |
@@ -45,5 +44,6 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_resource_group"></a> [resource\_group](#output\_resource\_group) | Outputed attributes from the resource group creation (id,location,name) |
-| <a name="output_rg"></a> [rg](#output\_rg) | [DEPRECATED] Created resource group |
+| <a name="output_resource_group"></a> [resource\_group](#output\_resource\_group) | All informations regarding deployed Resource Group |
+| <a name="output_subnets"></a> [subnets](#output\_subnets) | All informations regarding deployed Subnets |
+| <a name="output_virtual_network"></a> [virtual\_network](#output\_virtual\_network) | All informations regarding deployed Virtual Network |
