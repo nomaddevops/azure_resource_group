@@ -1,13 +1,7 @@
-variable "name" {
-  type        = string
-  default     = null
-  description = "Generic name of the resource group"
-}
-
 variable "location" {
   type        = string
   default     = "francecentral"
-  description = "Common name for the region to deploy, allowed location are France Central or France South"
+  description = "Azure Region Name (See https://azuretracks.com/2021/04/current-azure-region-names-reference/ for more infos)"
 }
 
 variable "rg_policy_type" {
