@@ -7,7 +7,7 @@ on:
       - '*'
 
 jobs:
-  SecurityChecks:
+  SyntaxCheck:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -20,8 +20,13 @@ jobs:
       run: |
         terraform init
         terraform validate
+
+  SecurityChecks:
+    needs: SyntaxCheck
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - name: Install TFSec
       run : |
         curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
         tfsec .
-
