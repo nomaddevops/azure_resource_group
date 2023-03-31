@@ -3,18 +3,18 @@ data "azurerm_subscription" "current" {}
 
 locals {
   vnet_peerings = {
-    vnet-francecentral-infra = {
-      rg                                = "rg-francecentral-infra"
-      from_allow_virtual_network_access = true
-      from_allow_forwarded_traffic      = true
-      from_allow_gateway_transit        = false
-      from_use_remote_gateways          = false
-
-      to_allow_virtual_network_access = true
-      to_allow_forwarded_traffic      = true
-      to_allow_gateway_transit        = false
-      to_use_remote_gateways          = false
-    }
+    #vnet-francecentral-infra = {
+    #  rg                                = "rg-francecentral-infra"
+    #  from_allow_virtual_network_access = true
+    #  from_allow_forwarded_traffic      = true
+    #  from_allow_gateway_transit        = false
+    #  from_use_remote_gateways          = false
+#
+    #  to_allow_virtual_network_access = true
+    #  to_allow_forwarded_traffic      = true
+    #  to_allow_gateway_transit        = false
+    #  to_use_remote_gateways          = false
+    #}
   }
 }
 

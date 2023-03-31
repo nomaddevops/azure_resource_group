@@ -39,22 +39,22 @@ resource "azurerm_subnet_route_table_association" "rtb_assoc" {
 
 resource "azurerm_public_ip" "nat_gw_pip" {
   count               = var.subnet_type == "private" ? var.is_multi_az == true ? 3 : 1 : 0
-  name                = format("natgw-pip-az-%s", count.index)
+  name                = format("natgw-pip-az-%s", count.index+1)
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
-  zones               = [count.index]
+  zones               = [count.index+1]
 }
 
 resource "azurerm_nat_gateway" "nat_gw" {
   count                   = var.subnet_type == "private" ? var.is_multi_az == true ? 3 : 1 : 0
-  name                    = format("natgw-az-%s", count.index)
+  name                    = format("natgw-az-%s", count.index+1)
   location                = var.resource_group_location
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"
   idle_timeout_in_minutes = 4
-  zones                   = [count.index]
+  zones                   = [count.index+1]
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "nat_gw_pip_assoc" {

@@ -9,6 +9,6 @@ output "virtual_network" {
 }
 
 output "subnets" {
-  value       = module.subnets.subnet
+  value       = module.subnets
   description = "All informations regarding deployed Subnets"
 }
