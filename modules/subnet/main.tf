@@ -5,17 +5,15 @@ locals {
 }
 
 resource "azurerm_subnet" "subnet" {
-  count                                          = var.is_multi_az == true ? length(local.zones) : 1
-  name                                           = format("%s-subnet-%s-az-%s", var.subnet_type, terraform.workspace, count.index)
+  name                                           = format("%s-subnet-%s", var.subnet_type, terraform.workspace)
   resource_group_name                            = var.resource_group_name
   virtual_network_name                           = var.virtual_network_name
-  address_prefixes                               = toset([cidrsubnet(var.address_space, 8, (count.index + local.offset))])
+  address_prefixes                               = toset([cidrsubnet(var.address_space, 8, local.offset)])
   enforce_private_link_endpoint_network_policies = var.enforce_private_link_endpoint_network_policies
 }
 
 resource "azurerm_route_table" "rtb" {
-  count                         = var.is_multi_az ? length(local.zones) : 1
-  name                          = format("%s-rtb-%s-az%s", var.subnet_type, terraform.workspace, count.index)
+  name                          = format("%s-rtb-%s", var.subnet_type, terraform.workspace)
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
   disable_bgp_route_propagation = false
@@ -32,33 +30,38 @@ resource "azurerm_route_table" "rtb" {
 }
 
 resource "azurerm_subnet_route_table_association" "rtb_assoc" {
-  count          = var.is_multi_az ? length(local.zones) : 1
-  subnet_id      = azurerm_subnet.subnet[count.index].id
-  route_table_id = azurerm_route_table.rtb[count.index].id
+  subnet_id      = azurerm_subnet.subnet.id
+  route_table_id = azurerm_route_table.rtb.id
 }
 
 resource "azurerm_public_ip" "nat_gw_pip" {
   count               = var.subnet_type == "private" ? var.is_multi_az == true ? 3 : 1 : 0
-  name                = format("natgw-pip-az-%s", count.index+1)
+  name                = format("natgw-pip-%s-az-%s", terraform.workspace, count.index + 1)
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
-  zones               = [count.index+1]
+  zones               = var.is_multi_az == true ? [count.index + 1] : [1]
 }
 
 resource "azurerm_nat_gateway" "nat_gw" {
   count                   = var.subnet_type == "private" ? var.is_multi_az == true ? 3 : 1 : 0
-  name                    = format("natgw-az-%s", count.index+1)
+  name                    = format("natgw-%s-az-%s", terraform.workspace, count.index + 1)
   location                = var.resource_group_location
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"
   idle_timeout_in_minutes = 4
-  zones                   = [count.index+1]
+  zones                   = var.is_multi_az == true ? [count.index + 1] : [1]
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "nat_gw_pip_assoc" {
   count                = var.subnet_type == "private" ? var.is_multi_az == true ? 3 : 1 : 0
   nat_gateway_id       = azurerm_nat_gateway.nat_gw[count.index].id
   public_ip_address_id = azurerm_public_ip.nat_gw_pip[count.index].id
+}
+
+resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
+  count          = var.subnet_type == "private" ? var.is_multi_az == true ? 3 : 1 : 0
+  subnet_id      = azurerm_subnet.subnet.id
+  nat_gateway_id = azurerm_nat_gateway.nat_gw[count.index].id
 }
