@@ -1,7 +1,36 @@
+variable "name" {
+  type        = string
+  default     = null
+  description = "Generic name of the resource group"
+}
+
 variable "location" {
   type        = string
   default     = "francecentral"
-  description = "Azure Region Name (See https://azuretracks.com/2021/04/current-azure-region-names-reference/ for more infos)"
+  description = "Common name for the region to deploy, allowed location are France Central or France South"
+}
+
+variable "address_space" {
+  type        = string
+  default     = "10.16.0.0/16"
+  description = "Full CIDR notation for the resource group, this must match the convention x.x.x.x/x"
+}
+
+variable "vnet_peerings" {
+  type = map(object({
+    rg                                = string
+    from_allow_virtual_network_access = optional(bool)
+    from_allow_forwarded_traffic      = optional(bool)
+    from_allow_gateway_transit        = optional(bool)
+    from_use_remote_gateways          = optional(bool)
+
+    to_allow_virtual_network_access = optional(bool)
+    to_allow_forwarded_traffic      = optional(bool)
+    to_allow_gateway_transit        = optional(bool)
+    to_use_remote_gateways          = optional(bool)
+  }))
+  default     = {}
+  description = "Configuration of virtual network peering"
 }
 
 variable "rg_policy_type" {
@@ -38,11 +67,14 @@ variable "subnet_config" {
     is_multi_az = optional(bool)
   }))
   description = "Map of object, where key is the subnet type to deploy(public, private, vpn) and it's multi-az configuration "
-  default     = {
-    public = {}
+  default = {
+    public  = {}
     private = {}
-    vpn = {}
+    vpn     = {}
   }
 }
 
-
+variable "dns_zone" {
+  type    = map(object({}))
+  default = {}
+}
