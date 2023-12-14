@@ -1,10 +1,4 @@
 
-###############################################################
-#                          AZURE_RG                           #
-# Purpose: Deploy an Azure resource gorup and his components  #
-#                   Last Updated: 01/11/22                    #
-###############################################################
-
 output "rg" {
   value       = azurerm_resource_group.rg
   description = "[DEPRECATED] Created resource group"
