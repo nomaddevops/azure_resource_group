@@ -1,14 +1,3 @@
-
-
-data "azurerm_subscription" "current" {}
-
-# RG
-# VNET
-# Nx Subnet Pub
-# Nx Subnet Priv
-# Nx RTB (bonus)
-# Nx NatGW (bonus)
-
 resource "azurerm_resource_group" "rg" {
   name     = format("rg-%s", terraform.workspace)
   location = var.location

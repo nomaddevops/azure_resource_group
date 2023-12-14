@@ -9,7 +9,7 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name                            = var.resource_group_name
   virtual_network_name                           = var.virtual_network_name
   address_prefixes                               = toset([cidrsubnet(var.address_space, 8, local.offset)])
-  enforce_private_link_endpoint_network_policies = var.enforce_private_link_endpoint_network_policies
+  private_endpoint_network_policies_enabled = var.enforce_private_link_endpoint_network_policies
 }
 
 resource "azurerm_route_table" "rtb" {
